@@ -1,6 +1,6 @@
 {
 	"name": "quick-initiative",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Quick Initiative, a light initiative tracker that keeps the fight as text in an Obsidian note.",
 	"main": "main.js",
 	"type": "module",

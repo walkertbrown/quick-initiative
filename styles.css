@@ -82,11 +82,10 @@
 	width: 16px;
 	height: 16px;
 }
-.qi-roll,
-.qi-next {
+.qi .qi-roll, .qi .qi-next {
 	background: var(--qi-accent);
 	border-color: var(--qi-accent);
-	color: var(--text-on-accent, #fff) !important;
+	color: var(--text-on-accent, #fff);
 	font-weight: 600;
 }
 .qi-roll:hover,
@@ -140,9 +139,9 @@
 	text-decoration: line-through;
 }
 
-.qi-init {
+.qi .qi-init {
 	width: 44px;
-	height: 44px !important;
+	height: 44px;
 	border-radius: 50%;
 	border: 2px solid var(--background-modifier-border);
 	background: var(--background-secondary);
@@ -216,8 +215,8 @@
 	gap: 4px;
 	margin-top: 2px;
 }
-.qi-cond {
-	font-size: 0.75em !important;
+.qi .qi-cond {
+	font-size: 0.75em;
 	padding: 1px 8px;
 	border-radius: 999px;
 	border: 1px solid color-mix(in srgb, var(--qi-hurt) 60%, transparent);
@@ -265,9 +264,9 @@
 	color: var(--text-faint, #888);
 }
 
-.qi-del {
-	border: 0 !important;
-	background: transparent !important;
+.qi .qi-del {
+	border: 0;
+	background: transparent;
 	color: var(--text-faint, #888);
 	padding: 4px;
 	opacity: 0.4;
@@ -334,9 +333,9 @@
 		grid-template-columns: 38px 1fr auto;
 		gap: 8px;
 	}
-	.qi-init {
+	.qi .qi-init {
 		width: 38px;
-		height: 38px !important;
+		height: 38px;
 	}
 	.qi-del {
 		position: absolute;
