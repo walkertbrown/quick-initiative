@@ -1,7 +1,7 @@
 {
 	"id": "quick-initiative",
 	"name": "Quick Initiative",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"minAppVersion": "1.13.0",
 	"description": "A light initiative tracker that keeps the whole fight as plain text in your note. Reads HP, AC and Dex from Fantasy Statblocks creature notes.",
 	"author": "Bananafest Destiny",

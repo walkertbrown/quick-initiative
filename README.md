@@ -23,6 +23,26 @@ Switch to reading view (or live preview) and the block becomes a tracker. Press 
 
 The command **Insert initiative block** drops a starter block at the cursor.
 
+## Your party
+
+Write your players once, under **Settings → Quick Initiative → Party**, one per line in the same format:
+
+```
+Aria hp 31 ac 16 init +3
+Borin hp 44 ac 18
+```
+
+Then a line that says `party` in any initiative block brings them all in, as players:
+
+````
+```initiative
+party
+3x [[Goblin]]
+```
+````
+
+On the first change (rolling initiative, say), the players are written into the note in place of `party`, so the fight records who was there. A player with an `init +3` modifier is rolled with the creatures; give one a plain number at the table (`init 17`) and it's kept. When you have a party, **Insert initiative block** starts with `party`.
+
 ## Creature notes
 
 Link a creature note and its numbers fill in by themselves. Quick Initiative reads the frontmatter that Fantasy Statblocks uses:

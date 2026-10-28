@@ -7,6 +7,7 @@ import {
 	heal,
 	parseEncounter,
 	parseLine,
+	parseParty,
 	rollAll,
 	rollHitDice,
 	serializeEncounter,
@@ -146,5 +147,13 @@ describe('creature notes', () => {
 		expect(rollHitDice('2d6 + 3', seq(0.99))).toBe(15);
 		expect(rollHitDice('3d8-3', seq(0))).toBe(1); // never below 1
 		expect(rollHitDice('lots', seq(0))).toBeUndefined();
+	});
+});
+
+describe('parseParty', () => {
+	it('reads one player per line, all of them players', () => {
+		const p = parseParty('Aria hp 31 ac 16 init +3\n\n- Borin pc hp 44\n');
+		expect(p.map((c) => [c.name, c.player, c.mod, c.hp, c.ac])).toEqual([['Aria', true, 3, 31, 16], ['Borin', true, undefined, 44, undefined]]);
+		expect(parseEncounter('PARTY\nOgre', 'Aria').combatants.map((c) => c.name)).toEqual(['Aria', 'Ogre']);
 	});
 });

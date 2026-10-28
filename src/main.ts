@@ -29,11 +29,13 @@ import {
 interface Settings {
 	rollHp: boolean; // roll creature HP from hit dice instead of taking the average
 	skipDown: boolean; // skip creatures at 0 HP when moving to the next turn
+	party: string; // the players, one per line, brought in by a `party` line
 }
 
-const DEFAULT_SETTINGS: Settings = { rollHp: false, skipDown: true };
+const DEFAULT_SETTINGS: Settings = { rollHp: false, skipDown: true, party: '' };
 
 const TEMPLATE = '```initiative\nAria player init 15 hp 31 ac 15\n2x [[Goblin]]\n```\n';
+const PARTY_TEMPLATE = '```initiative\nparty\n2x [[Goblin]]\n```\n';
 
 // Other plugins can listen with app.workspace.on('quick-initiative:change', (e) => ...)
 export interface ChangeEvent {
@@ -50,7 +52,7 @@ export default class QuickInitiativePlugin extends Plugin {
 	async onload() {
 		await this.loadSettings();
 		this.registerMarkdownCodeBlockProcessor('initiative', (source, el, ctx) => {
-			const enc = parseEncounter(source);
+			const enc = parseEncounter(source, this.settings.party);
 			// numbers from creature notes are shown now and written on the next change,
 			// so opening a note never edits it
 			this.fillFromNotes(enc, ctx.sourcePath);
@@ -59,7 +61,7 @@ export default class QuickInitiativePlugin extends Plugin {
 		this.addCommand({
 			id: 'insert-block',
 			name: 'Insert initiative block',
-			editorCallback: (editor: Editor) => editor.replaceSelection(TEMPLATE),
+			editorCallback: (editor: Editor) => editor.replaceSelection(this.settings.party.trim() ? PARTY_TEMPLATE : TEMPLATE),
 		});
 		this.addSettingTab(new SettingTab(this.app, this));
 	}
@@ -415,6 +417,11 @@ class SettingTab extends PluginSettingTab {
 	}
 	getSettingDefinitions(): SettingDefinitionItem[] {
 		return [
+			{
+				name: 'Party',
+				desc: 'Your players, one per line, like "Aria hp 31 ac 16 init +3". A line that says party in an initiative block brings them all in.',
+				control: { type: 'textarea', key: 'party', defaultValue: '', placeholder: 'Aria hp 31 ac 16 init +3\nBorin hp 44 ac 18 init +0', rows: 6 },
+			},
 			{
 				name: 'Roll creature HP',
 				desc: 'Roll hit points from the creature note\'s hit dice instead of using its average.',

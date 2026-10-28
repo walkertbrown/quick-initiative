@@ -7,11 +7,12 @@ beforeAll(() => installDomHelpers());
 
 type Proc = (src: string, el: HTMLElement, c: ReturnType<typeof ctx>) => void;
 
-async function setup(note: string, extra: Record<string, { content?: string; frontmatter?: Record<string, unknown> }> = {}) {
+async function setup(note: string, extra: Record<string, { content?: string; frontmatter?: Record<string, unknown> }> = {}, data: unknown = null) {
 	const app = new App();
 	app.notes.set('Game.md', { path: 'Game.md', content: note });
 	for (const [k, v] of Object.entries(extra)) app.notes.set(k, { path: `${k}.md`, content: v.content ?? '', ...v });
 	const plugin = new QuickInitiativePlugin(app as never, { id: 'quick-initiative' } as never);
+	(plugin as never as { data: unknown }).data = data;
 	await plugin.onload();
 	const proc = (plugin as never as { codeBlocks: Record<string, Proc> }).codeBlocks.initiative!;
 	const lines = note.split('\n');
@@ -108,5 +109,31 @@ describe('initiative block', () => {
 		const { app, click } = await setup('```initiative\n[[Goblin]]\n```', { Goblin: GOBLIN });
 		await click('.qi-name');
 		expect(app.opened).toEqual(['Goblin']);
+	});
+});
+
+describe('the party', () => {
+	const PARTY = { party: 'Aria hp 31 ac 16 init +3\nBorin player hp 44 ac 18\n\n' };
+
+	it('brings the party from settings into a block that says party, and writes them in on the first change', async () => {
+		const { el, plugin, content, click } = await setup('```initiative\nparty\n[[Goblin]]\n```', { Goblin: GOBLIN }, PARTY);
+		expect(Array.from(el.querySelectorAll('.qi-name')).map((n) => n.textContent)).toEqual(['Aria', 'Borin', 'Goblin']);
+		expect(content()).toBe('```initiative\nparty\n[[Goblin]]\n```');
+		plugin.rng = () => 0.5; // d20 = 11
+		await click('.qi-roll');
+		expect(content()).toBe(
+			'```initiative\nround 1\n> Aria player init 14 mod +3 hp 31/31 ac 16\nGoblin [[Goblin]] init 13 mod +2 hp 7/7 ac 15\n' +
+			'Borin player init 11 hp 44/44 ac 18\n```',
+		);
+	});
+
+	it('brings no one when there is no party, and the insert command uses it when there is', async () => {
+		const { el } = await setup('```initiative\nparty\nOgre\n```');
+		expect(Array.from(el.querySelectorAll('.qi-name')).map((n) => n.textContent)).toEqual(['Ogre']);
+		const { plugin } = await setup('```initiative\nOgre\n```', {}, PARTY);
+		let put = '';
+		const cmd = (plugin as never as { commands: { id: string; editorCallback: (e: unknown) => void }[] }).commands.find((c) => c.id === 'insert-block')!;
+		cmd.editorCallback({ replaceSelection: (t: string) => (put = t) });
+		expect(put).toBe('```initiative\nparty\n2x [[Goblin]]\n```\n');
 	});
 });

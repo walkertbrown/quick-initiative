@@ -108,7 +108,14 @@ export function parseLine(line: string): Combatant[] {
 	}));
 }
 
-export function parseEncounter(src: string): Encounter {
+// The party kept in settings, one player per line in the same format ("Aria hp 31 ac 16 init +3").
+// Everyone in it is a player, whether the line says so or not.
+export function parseParty(party: string): Combatant[] {
+	return party.split('\n').flatMap((l) => parseLine(l)).map((c) => ({ ...c, player: true, current: false }));
+}
+
+// A line that is just "party" brings in the party from settings; the next change writes them into the note.
+export function parseEncounter(src: string, party = ''): Encounter {
 	const enc: Encounter = { round: 0, combatants: [] };
 	for (const raw of src.split('\n')) {
 		const line = raw.trim();
@@ -118,7 +125,8 @@ export function parseEncounter(src: string): Encounter {
 			enc.round = parseInt(r[1]!, 10);
 			continue;
 		}
-		enc.combatants.push(...parseLine(line));
+		if (/^party$/i.test(line)) enc.combatants.push(...parseParty(party));
+		else enc.combatants.push(...parseLine(line));
 	}
 	// only one current turn
 	let seen = false;
