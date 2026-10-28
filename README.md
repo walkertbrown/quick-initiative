@@ -100,7 +100,7 @@ By hand: copy `main.js`, `manifest.json` and `styles.css` from the latest releas
 - [Dice Tray](https://github.com/walkertbrown/dice-tray): rolls dice, random tables and note sections inline, and reads Dice Roller's `dice:` syntax.
 - [Session Log](https://github.com/walkertbrown/session-log): a quick log for game night. With it installed, fights log themselves: when they start, who goes down, how many rounds.
 - [Encounter Builder](https://github.com/walkertbrown/encounter-builder): plan fights against the 5E XP budget, then start them in Quick Initiative.
-- [Progress Clocks](https://github.com/walkertbrown/progress-clocks): segmented clocks for danger, plans and factions, ticked with a click and kept as text in the note.
+- [Tabletop Clocks](https://github.com/walkertbrown/tabletop-clocks): segmented clocks for danger, plans and factions, ticked with a click and kept as text in the note.
 
 ## Source
 
