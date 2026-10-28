@@ -40,7 +40,7 @@ export interface ChangeEvent {
 	sourcePath: string;
 	round: number;
 	current: string | null;
-	combatants: { name: string; link?: string; init?: number; hp?: number; maxHp?: number; player: boolean }[];
+	combatants: { name: string; link?: string; init?: number; hp?: number; maxHp?: number; player: boolean; conditions: string[] }[];
 }
 
 export default class QuickInitiativePlugin extends Plugin {
@@ -121,7 +121,7 @@ export default class QuickInitiativePlugin extends Plugin {
 			round: enc.round,
 			current: cur ? cur.name : null,
 			combatants: enc.combatants.map((c) => ({
-				name: c.name, link: c.link, init: c.init, hp: c.hp, maxHp: c.maxHp, player: c.player,
+				name: c.name, link: c.link, init: c.init, hp: c.hp, maxHp: c.maxHp, player: c.player, conditions: [...c.conditions],
 			})),
 		};
 		this.app.workspace.trigger('quick-initiative:change', ev);

@@ -79,7 +79,7 @@ Opening a note never changes it. Numbers read from creature notes are written in
 
 ## For other plugins
 
-Each change fires a workspace event with the round, whose turn it is, and everyone's initiative and HP:
+Each change fires a workspace event with the round, whose turn it is, and everyone's initiative, HP and conditions:
 
 ```ts
 this.registerEvent(this.app.workspace.on('quick-initiative:change', (e) => console.log(e.round, e.current)));
@@ -98,7 +98,7 @@ By hand: copy `main.js`, `manifest.json` and `styles.css` from the latest releas
 ## Also from this maker
 
 - [Dice Tray](https://github.com/walkertbrown/dice-tray): rolls dice, random tables and note sections inline, and reads Dice Roller's `dice:` syntax.
-- [Session Log](https://github.com/walkertbrown/session-log): a quick log for game night. With it installed, fights log themselves: when they start, who goes down, how many rounds.
+- [Session Log](https://github.com/walkertbrown/session-log): a quick log for game night. With it installed, fights log themselves: when they start, each round, every hit, heal and condition, who goes down, how many rounds.
 - [Encounter Builder](https://github.com/walkertbrown/encounter-builder): plan fights against the 5E XP budget, then start them in Quick Initiative.
 - [Tabletop Clocks](https://github.com/walkertbrown/tabletop-clocks): segmented clocks for danger, plans and factions, ticked with a click and kept as text in the note.
 

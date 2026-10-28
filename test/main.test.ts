@@ -52,6 +52,8 @@ describe('initiative block', () => {
 		);
 		expect(el.querySelector('.qi-round-num')!.textContent).toBe('1');
 		expect(app.events.at(-1)).toMatchObject({ name: 'quick-initiative:change', data: { round: 1, current: 'Aria' } });
+		// conditions go out too, so Session Log can note them going on and off
+		expect((app.events.at(-1)!.data as { combatants: { conditions: string[] }[] }).combatants[0]!.conditions).toEqual([]);
 	});
 
 	it('next turn moves the marker', async () => {
